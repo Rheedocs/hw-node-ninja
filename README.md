@@ -14,7 +14,7 @@ Udkast som gruppen retter til. Skal vises til en anden studiegruppe, før vi kod
 | Hvor håndteres routes? | `fileRoutes.js` kobler URL og metode til controlleren. `notFound.js` giver 404 til alt andet. |
 | Hvor anvendes async/await? | `fileRepository.js` (`fs.promises`), `fileService.js`, `fileController.js` og i `simulate_clients.js` |
 | Hvor håndteres fejl? | try/catch i `fileController.js` (500 ved filfejl, 400 ved ugyldigt input). `errorHandler.js` fanger resten, fx ugyldig JSON. |
-| Hvilket event skal udsendes? | `request` med `{ method, path }`, udsendt af `requestEvents.js` før alle routes, så også 404 logges |
+| Hvilket event skal udsendes? | `request` med `{ method, path }`, udsendt af `requestEvents.js` før alle routes, så også 404 logges. Listeneren ligger i `requestLogger.js` og kobles på emitteren i `server.js` |
 | Hvad skal loggen indeholde? | Metode og path, fx `GET /read-file`. Timestamp er en udvidelse. |
 | Hvordan vil I teste fejlforløbet? | Omdøbe `data/data.txt` og kalde `/read-file` (forventer 500). POST uden `content` (forventer 400). Ukendt route (forventer 404). |
 
