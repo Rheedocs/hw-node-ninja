@@ -22,15 +22,15 @@ const assert = require('node:assert/strict');
 const { createFileService } = require('../src/services/fileService');
 
 test('readContent_repositoryReturnsText_returnsText', async () => {
-  // Arrange
-  const fakeRepository = { readFile: async () => 'Hej fra filen' };
-  const service = createFileService(fakeRepository);
+    // Arrange
+    const fakeRepository = { readFile: async () => 'Hej fra filen' };
+    const service = createFileService(fakeRepository);
 
-  // Act
-  const result = await service.readContent();
+    // Act
+    const result = await service.readContent();
 
-  // Assert
-  assert.equal(result, 'Hej fra filen');
+    // Assert
+    assert.equal(result, 'Hej fra filen');
 });
 ```
 
@@ -49,36 +49,36 @@ const { EventEmitter } = require('node:events');
 const { attachRequestLogger } = require('../src/events/requestLogger');
 
 test('attachRequestLogger_requestEmitted_writesMethodAndPath', () => {
-  // Arrange
-  const emitter = new EventEmitter();
-  const lines = [];
-  attachRequestLogger(emitter, (line) => lines.push(line));
+    // Arrange
+    const emitter = new EventEmitter();
+    const lines = [];
+    attachRequestLogger(emitter, (line) => lines.push(line));
 
-  // Act
-  emitter.emit('request', { method: 'GET', path: '/read-file' });
+    // Act
+    emitter.emit('request', { method: 'GET', path: '/read-file' });
 
-  // Assert
-  assert.deepEqual(lines, ['GET /read-file']);
+    // Assert
+    assert.deepEqual(lines, ['GET /read-file']);
 });
 ```
 
 ## With fakes (external dependency)
-Used when the code depends on the file system or another team member's part. Replace the dependency with a small fake that has the same functions.
+Used when the code depends on the file system or another team member's part. Replace the dependency with a small fake that has the same functions as the matching type in `src/contracts.js`.
 
 ```js
 const fakeRepository = {
-  readFile: async () => { throw new Error('boom'); },
-  writeFile: async () => {},
+    readFile: async () => { throw new Error('boom'); },
+    writeFile: async () => {},
 };
 ```
 
 ```js
 test('readContent_repositoryFails_throws', async () => {
-  // Arrange
-  const service = createFileService(fakeRepository);
+    // Arrange
+    const service = createFileService(fakeRepository);
 
-  // Act and Assert
-  await assert.rejects(() => service.readContent());
+    // Act and Assert
+    await assert.rejects(() => service.readContent());
 });
 ```
 
@@ -89,21 +89,21 @@ test('readContent_repositoryFails_throws', async () => {
 const { createApp } = require('../src/app');
 
 test('getReadFile_repositoryFails_returns500', async (t) => {
-  // Arrange
-  const fakeRepository = {
-    readFile: async () => { throw new Error('boom'); },
-    writeFile: async () => {},
-  };
-  const app = createApp({ fileRepository: fakeRepository, emitter: new EventEmitter() });
-  const server = app.listen(0);
-  t.after(() => server.close());
-  const { port } = server.address();
+    // Arrange
+    const fakeRepository = {
+        readFile: async () => { throw new Error('boom'); },
+        writeFile: async () => {},
+    };
+    const app = createApp({ fileRepository: fakeRepository, emitter: new EventEmitter() });
+    const server = app.listen(0);
+    t.after(() => server.close());
+    const { port } = server.address();
 
-  // Act
-  const response = await fetch(`http://localhost:${port}/read-file`);
+    // Act
+    const response = await fetch(`http://localhost:${port}/read-file`);
 
-  // Assert
-  assert.equal(response.status, 500);
+    // Assert
+    assert.equal(response.status, 500);
 });
 ```
 
@@ -116,11 +116,11 @@ const path = require('node:path');
 const { createFileRepository } = require('../src/repositories/fileRepository');
 
 test('readFile_fileMissing_throws', async () => {
-  // Arrange
-  const repository = createFileRepository(path.join(os.tmpdir(), 'findes-ikke.txt'));
+    // Arrange
+    const repository = createFileRepository(path.join(os.tmpdir(), 'findes-ikke.txt'));
 
-  // Act and Assert
-  await assert.rejects(() => repository.readFile());
+    // Act and Assert
+    await assert.rejects(() => repository.readFile());
 });
 ```
 

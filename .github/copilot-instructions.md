@@ -38,6 +38,7 @@ Folders and files:
 11. `data/data.txt`: the file the server reads and writes.
 12. `scripts/simulate_clients.js`: sends at least 10 requests quickly.
 13. `tests/`: tests, see below.
+14. `src/contracts.js`: JSDoc types for `FileRepository`, `FileService`, `RequestEvent` and `AppDependencies`. Types only, no code. Fakes in tests must match these types.
 
 Dependencies only point one way: routes, controller, service, repository. A layer never knows the layers above it.
 
@@ -81,8 +82,8 @@ Request body for POST: `{ "content": "Ny tekst til filen" }`. Invalid JSON gives
 
 1. Identifiers in English. Comments and commit messages in Danish. User facing error messages in Danish.
 2. Simple, readable code over clever solutions. The code must be explainable at the checkpoint.
-3. Small functions with one responsibility. KISS, no unnecessary complexity.
-4. Public functions use JSDoc comments (`/** ... */`).
+3. Small functions with one responsibility. KISS, no unnecessary complexity. Structure and architecture are followed, but never at the cost of KISS: if a rule makes the code harder to explain, stop and ask the group.
+4. Public functions use JSDoc comments (`/** ... */`) and refer to the types in `src/contracts.js`, e.g. `@param {import('../contracts').FileRepository} fileRepository`.
 5. async/await, never callbacks. No new packages without asking. Use the built in `fetch` in scripts and tests, not axios.
 6. Commit style: short, lowercase, conventional commits with the prefix in English and the text in Danish, e.g. `feat: tilføj read-file endpoint`.
 
@@ -119,6 +120,7 @@ curl.exe -X POST -H "Content-Type: application/json" -d "{\"content\":\"Ny tekst
 6. If the branch, files or build look wrong: stop and report. Do not repair something you do not understand.
 7. Never commit `node_modules/` or `.idea/`.
 8. If a file from another issue is missing, use a small fake with the same functions. Never create the real one yourself.
+9. Never change `src/contracts.js` without a separate issue.
 
 ## Working with the agent
 
