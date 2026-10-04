@@ -39,7 +39,7 @@ Write the test before the code.
 
 1. Write a failing test (red)
 2. Write the smallest code that makes it pass (green)
-3. Refactor without breaking the test (refactor)
+3. Refactor without breaking the test (refactor). Clean names, small functions, no duplication. Run `npm run check` afterwards.
 
 ## Without fakes (pure logic)
 Used when the code has no external dependencies. The request logger and the emitter belong here.

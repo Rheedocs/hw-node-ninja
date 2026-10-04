@@ -4,6 +4,16 @@ This is a group assignment (Node.js). The goal is not only working code, but als
 
 The agent implements small, clearly scoped parts only. Never build the whole system in one go. No code is accepted unless the whole group can explain it.
 
+## Definition of done
+
+A task is done only when all of this is true:
+
+1. `npm run check` is green. It runs `npm test` and `npm run lint`.
+2. The manual tests that match the change have been run (see Tests).
+3. The agent has reported the change (see After every change).
+
+If anything is red, the task is not done. Never make a test, a lint rule or `eslint.config.js` weaker to get green. Fix the code instead. Changes to `eslint.config.js` need their own issue.
+
 ## The assignment
 
 An Express server that reads and writes a text file asynchronously, logs every HTTP request through an EventEmitter, returns understandable errors and handles many requests at once.
@@ -14,6 +24,8 @@ An Express server that reads and writes a text file asynchronously, logs every H
 npm install
 npm start
 npm test
+npm run lint
+npm run check
 node scripts/simulate_clients.js
 ```
 
@@ -45,6 +57,54 @@ Dependencies only point one way: routes, controller, service, repository. A laye
 Dependency injection: layers get their dependencies as parameters through factory functions and never create them themselves: `createFileRepository(filePath)`, `createFileService(fileRepository)`, `createFileController(fileService)`, `createFileRoutes(fileController)`. Wiring happens only in `server.js` and `app.js`.
 
 File paths are built with `path.join(__dirname, ...)` in `server.js`, never relative to the folder the server was started from.
+
+## What the tools check
+
+`npm run lint` enforces these rules, so do not rely on memory or on reading the code:
+
+1. Max complexity 6 per function, max 25 lines per function, max 120 lines per file, max 3 parameters.
+2. Services do not require `express`, `fs` or anything from controllers and routes.
+3. Repositories do not require `express` or anything from services, controllers and routes.
+4. Only the repository requires `fs`.
+
+If lint fails, fix the code: split the function, move the logic to the right layer. Never add `eslint-disable` comments.
+
+Everything else in this file is a rule the agent follows itself and the group checks in review.
+
+## Working method
+
+Work in small steps, one issue at a time. Follow `docs/unit-test-guide.md`.
+
+1. Red: write one failing test and see it fail.
+2. Green: write the smallest code that passes.
+3. Refactor: with the tests green, clean up. Clear names, small functions that do one thing, no duplication, no comments that only repeat the code. Run `npm run check`.
+4. Repeat for the next small step.
+
+Do not pile up changes without cleaning up. If a fix breaks something else, fix that before moving on. If you go in circles (fix one thing, break another), stop and report what happens instead of trying again.
+
+Every task given to the agent follows this structure:
+
+```
+Opgave: What should be changed?
+Kontekst: Which files are relevant?
+Krav: What must the solution do?
+Må ikke ændres: What must the agent stay away from?
+Test: How do we know it works?
+```
+
+Before a bigger change: first explain the control flow from request to response, find possible problems with async and error handling, and make a short plan. Wait for our OK. Implement only the agreed change.
+
+Order of work:
+
+1. `server.js` and `app.js`: Express starts and answers, 404 works
+2. `GET /read-file`: repository, service, controller and route
+3. `POST /write-file`: validation (400) and writing
+4. EventEmitter: `emit` in `requestEvents`, `on` in `requestLogger`
+5. `errorHandler` and the error scenario (missing file, invalid input)
+6. `scripts/simulate_clients.js` with 10 requests
+7. Tests in `tests/`
+
+After every change: show which files and lines were changed, explain the change briefly, say that `npm run check` is green, say which manual tests we should run and say if anything was changed that we did not ask for.
 
 ## Endpoints
 
@@ -82,14 +142,12 @@ Request body for POST: `{ "content": "Ny tekst til filen" }`. Invalid JSON gives
 
 1. Identifiers in English. Comments and commit messages in Danish. User facing error messages in Danish.
 2. Simple, readable code over clever solutions. The code must be explainable at the checkpoint.
-3. Small functions with one responsibility. KISS, no unnecessary complexity. Structure and architecture are followed, but never at the cost of KISS: if a rule makes the code harder to explain, stop and ask the group.
+3. KISS: structure and architecture are followed, but never at the cost of KISS. If a rule makes the code harder to explain, stop and ask the group.
 4. Public functions use JSDoc comments (`/** ... */`) and refer to the types in `src/contracts.js`, e.g. `@param {import('../contracts').FileRepository} fileRepository`.
-5. async/await, never callbacks. No new packages without asking. Use the built in `fetch` in scripts and tests, not axios.
+5. async/await, never callbacks. No new packages without asking (ESLint is already agreed). Use the built in `fetch` in scripts and tests, not axios.
 6. Commit style: short, lowercase, conventional commits with the prefix in English and the text in Danish, e.g. `feat: tilføj read-file endpoint`.
 
 ## Tests
-
-Follow `docs/unit-test-guide.md` (AAA, naming `method_scenario_expectedResult`, one thing per test).
 
 Manual tests as a minimum:
 
@@ -103,13 +161,6 @@ Manual tests as a minimum:
 | Any request | A log event is emitted |
 | 10 requests fast (`scripts/simulate_clients.js`) | Server answers all |
 
-Quick test without a client, in PowerShell (use `curl.exe`, because `curl` is an alias for something else there):
-
-```bash
-curl.exe http://localhost:3000/read-file
-curl.exe -X POST -H "Content-Type: application/json" -d "{\"content\":\"Ny tekst\"}" http://localhost:3000/write-file
-```
-
 ## Git rules
 
 1. Work only on the branch for the current issue (e.g. `3/write_file`).
@@ -120,40 +171,16 @@ curl.exe -X POST -H "Content-Type: application/json" -d "{\"content\":\"Ny tekst
 6. If the branch, files or build look wrong: stop and report. Do not repair something you do not understand.
 7. Never commit `node_modules/` or `.idea/`.
 8. If a file from another issue is missing, use a small fake with the same functions. Never create the real one yourself.
-9. Never change `src/contracts.js` without a separate issue.
-
-## Working with the agent
-
-Every task given to the agent follows this structure:
-
-```
-Opgave: What should be changed?
-Kontekst: Which files are relevant?
-Krav: What must the solution do?
-Må ikke ændres: What must the agent stay away from?
-Test: How do we know it works?
-```
-
-Before a bigger change: first explain the control flow from request to response, find possible problems with async and error handling, and make a short plan. Wait for our OK. Implement only the agreed change.
-
-Order of work:
-
-1. `server.js` and `app.js`: Express starts and answers, 404 works
-2. `GET /read-file`: repository, service, controller and route
-3. `POST /write-file`: validation (400) and writing
-4. EventEmitter: `emit` in `requestEvents`, `on` in `requestLogger`
-5. `errorHandler` and the error scenario (missing file, invalid input)
-6. `scripts/simulate_clients.js` with 10 requests
-7. Tests in `tests/`
-
-After every change: show which files and lines were changed, explain the change briefly, say which tests we should run and say if anything was changed that we did not ask for.
+9. Never change `src/contracts.js` or `eslint.config.js` without a separate issue.
 
 ## Not the agent's job
 
 The README answers must be in our own words: what happens in Node.js while the server waits for a file operation, which event we use and when it is emitted, the AI example and the final sentence. Also the answers for the individual checkpoint. The agent may explain code when we ask, but does not write these texts.
 
+The group also reads the diff. Green checks do not replace that: we must be able to explain every line.
+
 ## Review mode
 
-When asked for a review, the agent may point out problems in: async/await and error handling, unhandled errors, status codes, several requests at once (e.g. two writes to the same file at the same time), the EventEmitter setup, layer responsibilities and unnecessary complexity.
+When asked for a review, the agent may point out problems in: async/await and error handling, unhandled errors, status codes, several requests at once (e.g. two writes to the same file at the same time), the EventEmitter setup, layer responsibilities, missing tests and unnecessary complexity. The agent may run `npm run check` and report the result.
 
 In review mode the agent must not change any code. Suggestions only.
