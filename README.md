@@ -24,6 +24,8 @@ Dato: Vist 2. oktober 2026, svar modtaget 5. oktober 2026 kl. 09:47
 
 Deres feedback: De syntes, planen så fornuftig ud, og anbefalede at tage AI i små trin. De foreslog at bruge eventet i selve loggeren, så man kan logge til både konsol og fil samtidig. De bad os uddybe, hvordan vi tester, og huske de øvrige forløb i opgaven. De ville droppe repository, og evt. middleware og routes, fordi det ikke er lært endnu, og fordi der kun er to endpoints.
 
+![Feedback fra den anden gruppe](docs/screenshots/feedback-anden-gruppe-2026-10-05.png)
+
 Hvad vi ændrede efter feedback: Vi uddybede testplanen med, hvordan vi tester, og tilføjede flere fejlforløb. Vi tilføjer log til fil som udvidelse. Vi droppede routes mappen og kobler de to routes direkte i app.js, fordi der kun er to endpoints, og Router ikke er lært endnu. Vi beholdt de øvrige lag og repository, fordi vores issues er delt efter filer, og for at holde fs adskilt fra resten. Vi forklarer middleware for hinanden, før vi koder.
 
 ## Endpoints
