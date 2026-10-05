@@ -38,23 +38,22 @@ CommonJS only (`require`, `module.exports`). Never ES modules.
 Folders and files:
 
 1. `src/server.js`: creates the real repository and the emitter, attaches the logger, builds the app with `createApp` and calls `listen`. Nothing else.
-2. `src/app.js`: `createApp({ fileRepository, emitter })` builds the Express app: `express.json()`, request events, routes, 404 and error handler.
-3. `src/routes/fileRoutes.js`: connects URL and method to a controller function. No logic.
-4. `src/controllers/fileController.js`: the only layer that knows `req` and `res`. Validates input, picks the status code and catches errors with try/catch. Functions: `handleReadFile(req, res)` and `handleWriteFile(req, res)`.
-5. `src/services/fileService.js`: business logic. Knows nothing about Express. Functions: `readContent()` and `writeContent(content)`.
-6. `src/repositories/fileRepository.js`: the only place that uses `fs`. Async with `fs.promises`. Throws when the file cannot be read or written. Functions: `readFile()` and `writeFile(content)`.
-7. `src/events/requestEmitter.js`: exports the one `EventEmitter` instance.
-8. `src/events/requestLogger.js`: the listener. `attachRequestLogger(emitter, write = console.log)` calls `emitter.on('request', ...)`.
-9. `src/middleware/requestEvents.js`: `createRequestEvents(emitter)` returns a middleware that calls `emitter.emit('request', { method, path })`.
-10. `src/middleware/notFound.js` and `src/middleware/errorHandler.js`.
-11. `data/data.txt`: the file the server reads and writes.
-12. `scripts/simulate_clients.js`: sends at least 10 requests quickly.
-13. `tests/`: tests, see below.
-14. `src/contracts.js`: JSDoc types for `FileRepository`, `FileService`, `RequestEvent` and `AppDependencies`. Types only, no code. Fakes in tests must match these types.
+2. `src/app.js`: `createApp({ fileRepository, emitter })` builds the Express app: `express.json()`, request events, the two routes (`app.get('/read-file', ...)` and `app.post('/write-file', ...)` pointing at the controller functions), 404 and error handler.
+3. `src/controllers/fileController.js`: the only layer that knows `req` and `res`. Validates input, picks the status code and catches errors with try/catch. Functions: `handleReadFile(req, res)` and `handleWriteFile(req, res)`.
+4. `src/services/fileService.js`: business logic. Knows nothing about Express. Functions: `readContent()` and `writeContent(content)`.
+5. `src/repositories/fileRepository.js`: the only place that uses `fs`. Async with `fs.promises`. Throws when the file cannot be read or written. Functions: `readFile()` and `writeFile(content)`.
+6. `src/events/requestEmitter.js`: exports the one `EventEmitter` instance.
+7. `src/events/requestLogger.js`: the listener. `attachRequestLogger(emitter, write = console.log)` calls `emitter.on('request', ...)`.
+8. `src/middleware/requestEvents.js`: `createRequestEvents(emitter)` returns a middleware that calls `emitter.emit('request', { method, path })`.
+9. `src/middleware/notFound.js` and `src/middleware/errorHandler.js`.
+10. `data/data.txt`: the file the server reads and writes.
+11. `scripts/simulate_clients.js`: sends at least 10 requests quickly.
+12. `tests/`: tests, see below.
+13. `src/contracts.js`: JSDoc types for `FileRepository`, `FileService`, `RequestEvent` and `AppDependencies`. Types only, no code. Fakes in tests must match these types.
 
-Dependencies only point one way: routes, controller, service, repository. A layer never knows the layers above it.
+Dependencies only point one way: controller, service, repository. A layer never knows the layers above it.
 
-Dependency injection: layers get their dependencies as parameters through factory functions and never create them themselves: `createFileRepository(filePath)`, `createFileService(fileRepository)`, `createFileController(fileService)`, `createFileRoutes(fileController)`. Wiring happens only in `server.js` and `app.js`.
+Dependency injection: layers get their dependencies as parameters through factory functions and never create them themselves: `createFileRepository(filePath)`, `createFileService(fileRepository)`, `createFileController(fileService)`. Wiring happens only in `server.js` and `app.js`.
 
 File paths are built with `path.join(__dirname, ...)` in `server.js`, never relative to the folder the server was started from.
 
@@ -97,7 +96,7 @@ Before a bigger change: first explain the control flow from request to response,
 Order of work:
 
 1. `server.js` and `app.js`: Express starts and answers, 404 works
-2. `GET /read-file`: repository, service, controller and route
+2. `GET /read-file`: repository, service, controller and the route in `app.js`
 3. `POST /write-file`: validation (400) and writing
 4. EventEmitter: `emit` in `requestEvents`, `on` in `requestLogger`
 5. `errorHandler` and the error scenario (missing file, invalid input)
