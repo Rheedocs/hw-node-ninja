@@ -4,6 +4,15 @@
 
 En Express server, der læser og skriver en tekstfil asynkront, logger alle HTTP requests med en EventEmitter og returnerer forståelige fejl.
 
+## Kom i gang
+
+```bash
+npm install
+npm start
+```
+
+Serveren kører på `http://localhost:3000`. `npm run check` kører tests og ESLint.
+
 ## Planlægning før vi koder
 
 Udkast som gruppen retter til. Skal vises til en anden studiegruppe, før vi koder.
@@ -60,4 +69,4 @@ Hvilket event bruger vi, og hvornår bliver det udsendt? (Skrives med egne ord.)
 
 ## Afslutning
 
-Den vigtigste forskel mellem den måde, vi håndterede samtidighed på i vores Java-server, og den måde Node.js-serveren arbejder på, er
+Den vigtigste forskel mellem den måde, vi håndterede samtidighed på i vores Java-server, og den måde Node.js-serveren arbejder på, er at Java-serveren gav hver klient sin egen tråd fra en ExecutorService, og tråden stod og ventede på sin klient. Node bruger kun én hovedtråd, som aldrig står og venter: når en request starter en filoperation med await, går Node videre til næste request og vender tilbage, når filen er klar.
