@@ -37,6 +37,18 @@ Deres feedback: De syntes, planen så fornuftig ud, og anbefalede at tage AI i s
 
 Hvad vi ændrede efter feedback: Vi uddybede testplanen med, hvordan vi tester, og tilføjede flere fejlforløb. Vi tilføjer log til fil som udvidelse. Vi droppede routes mappen og kobler de to routes direkte i app.js, fordi der kun er to endpoints, og Router ikke er lært endnu. Vi beholdt de øvrige lag og repository, fordi vores issues er delt efter filer, og for at holde fs adskilt fra resten. Vi forklarer middleware for hinanden, før vi koder.
 
+### Vi gav feedback til en anden gruppe
+
+Vist til os af: Tobys gruppe
+
+Dato: 6. oktober 2026
+
+Tobys plan: server.js, logger.js, data.txt, package.json og simulate_clients.js. Alt i server.js med Express, async/await i route handlers med fs.promises, try/catch i hver route handler og en generel 404 handler. Et custom event (fx log) via EventEmitter og manuel test med Postman eller browser.
+
+Vores feedback: Jeres plan dækker de centrale valg og er konkret omkring async/await, try/catch, 404 og logningens indhold. Godt at I tester både 500 og 400. To forslag: 1. Overvej at dele koden op i flere filer i stedet for alt i server.js, så den er nemmere at teste og vedligeholde. Vi delte vores i controller, service og repository. 2. Tilføj en generel fejlhandler, fordi try/catch i routes ikke fanger fejl fra express.json(), fx ødelagt JSON. Vi har en errorHandler middleware til det.
+
+![Tobys plan](docs/screenshots/plan-tobys-gruppe-2026-10-06.png)
+
 ## Endpoints
 
 | Metode | Endpoint | Funktion |
