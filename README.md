@@ -15,8 +15,6 @@ Serveren kører på `http://localhost:3000`. `npm run check` kører tests og ESL
 
 ## Planlægning før vi koder
 
-Udkast som gruppen retter til. Skal vises til en anden studiegruppe, før vi koder.
-
 | Spørgsmål | Gruppens beslutning |
 |---|---|
 | Hvilke filer skal projektet have? | `src/server.js`, `src/app.js`, `src/controllers/fileController.js`, `src/services/fileService.js`, `src/repositories/fileRepository.js`, `src/events/requestEmitter.js`, `src/events/requestLogger.js`, `src/middleware/` (requestEvents, notFound, errorHandler), `data/data.txt`, `scripts/simulate_clients.js`, `tests/`, `README.md` |
@@ -27,25 +25,19 @@ Udkast som gruppen retter til. Skal vises til en anden studiegruppe, før vi kod
 | Hvad skal loggen indeholde? | Metode og path, fx `GET /read-file`. Timestamp er en udvidelse. |
 | Hvordan vil I teste fejlforløbet? | Manuelt med curl eller Postman: omdøbe `data/data.txt` og kalde `/read-file` (forventer 500), POST uden `content` (400), `content` som tal (400), ugyldig JSON (400) og ukendt route (404). Automatisk med `node --test` og et fake repository. 10 requests med `scripts/simulate_clients.js`. Vi tester også de øvrige forløb fra opgaven: en gyldig POST opdaterer filen, og hver request udløser et log event. |
 
-Vist til gruppe: Import Gang
+Vist til gruppe: Import Gang (2. oktober 2026, svar 5. oktober 2026 kl. 09:47)
 
-Dato: Vist 2. oktober 2026, svar modtaget 5. oktober 2026 kl. 09:47
+Deres feedback: Planen så fornuftig ud. De anbefalede AI i små trin, at vi uddybede testplanen, og at vi huskede de øvrige forløb. De ville også droppe repository, middleware og routes. Se screenshot.
 
-Deres feedback: De syntes, planen så fornuftig ud, og anbefalede at tage AI i små trin. De foreslog at bruge eventet i selve loggeren, så man kan logge til både konsol og fil samtidig. De bad os uddybe, hvordan vi tester, og huske de øvrige forløb i opgaven. De ville droppe repository, og evt. middleware og routes, fordi det ikke er lært endnu, og fordi der kun er to endpoints.
+![Feedback fra Import Gang](docs/screenshots/feedback-anden-gruppe-2026-10-05.png)
 
-![Feedback fra den Import Gang](docs/screenshots/feedback-anden-gruppe-2026-10-05.png)
-
-Hvad vi ændrede efter feedback: Vi uddybede testplanen med, hvordan vi tester, og tilføjede flere fejlforløb. Vi tilføjer log til fil som udvidelse. Vi droppede routes mappen og kobler de to routes direkte i app.js, fordi der kun er to endpoints, og Router ikke er lært endnu. Vi beholdt de øvrige lag og repository, fordi vores issues er delt efter filer, og for at holde fs adskilt fra resten. Vi forklarer middleware for hinanden, før vi koder.
+Hvad vi ændrede: Vi uddybede testplanen og tilføjede flere fejlforløb. Vi droppede routes mappen. Vi beholdt repository og middleware, fordi vores issues er delt efter filer, og for at holde fs adskilt fra resten. Log til fil er en mulig udvidelse, men er ikke lavet.
 
 ### Vi gav feedback til en anden gruppe
 
-Vist til os af: Error 101
+Vist til os af: Error 101 (6. oktober 2026)
 
-Dato: 6. oktober 2026
-
-Tobys plan: server.js, logger.js, data.txt, package.json og simulate_clients.js. Alt i server.js med Express, async/await i route handlers med fs.promises, try/catch i hver route handler og en generel 404 handler. Et custom event (fx log) via EventEmitter og manuel test med Postman eller browser.
-
-Vores feedback: Jeres plan dækker de centrale valg og er konkret omkring async/await, try/catch, 404 og logningens indhold. Godt at I tester både 500 og 400. To forslag: 1. Overvej at dele koden op i flere filer i stedet for alt i server.js, så den er nemmere at teste og vedligeholde. Vi delte vores i controller, service og repository. 2. Tilføj en generel fejlhandler, fordi try/catch i routes ikke fanger fejl fra express.json(), fx ødelagt JSON. Vi har en errorHandler middleware til det.
+Vores feedback: Vi foreslog at dele koden op i flere filer og tilføje en generel fejlhandler til ødelagt JSON. Billedet viser deres plan.
 
 ![Error 101 plan](docs/screenshots/plan-tobys-gruppe-2026-10-06.png)
 
@@ -112,7 +104,7 @@ Hver af os skriver ét konkret eksempel fra vores egne issues.
 
 2. Hvad foreslog eller ændrede agenten?
 
-   Agenten foreslog en plan for hvordan vi kunne implementere request eventet og loggeren. Den foreslog at vi skulle oprette en requestEmitter.js fil, hvor vi kunne udsende request eventet med method og path. Den foreslog også at vi skulle oprette en requestLogger.js fil, hvor vi kunne lytte på request eventet og logge method og path til konsollen.
+   Agenten foreslog en plan for, hvordan vi kunne implementere request eventet og loggeren. Den foreslog at oprette requestEmitter.js, der eksporterer emitteren, og requestEvents.js, en middleware der udsender request eventet med method og path. Den foreslog også requestLogger.js, der lytter på eventet og logger method og path til konsollen.
 
 3. Hvad kontrollerede vi?
 
@@ -120,7 +112,7 @@ Hver af os skriver ét konkret eksempel fra vores egne issues.
 
 4. Accepterede, ændrede eller afviste vi forslaget?
 
-   Vi accepterede forslaget om at oprette requestEmitter.js og requestLogger.js filerne, og implementerede det i vores kode. Den første plan tog også 400 og 404 med, som hører til issue 4. Jeg bad den rette planen, så den kun gjaldt issue 3. Ellers afviste vi ingen forslag i issue 3, da vores plan var konkret, og vi satte strenge regler, så agenten ikke gik uden for vores ramme.
+   Vi accepterede forslaget om at oprette requestEmitter.js, requestEvents.js og requestLogger.js, og implementerede det i vores kode.
 
 ### Eksempel 3: Nicki (issue 1 og 6)
 
@@ -138,7 +130,7 @@ Hver af os skriver ét konkret eksempel fra vores egne issues.
 
 4. Accepterede, ændrede eller afviste vi forslaget?
 
-   Jeg ændrede det. Jeg rettede planen i Update Plan, og agenten rettede testene, så de har AAA og de rigtige navne. 400 testen tjekker nu også fejlbeskeden. npm run check fejlede, fordi issue 3 og 4 ikke var merget, og agenten stoppede og rørte ikke src/.
+   Jeg ændrede det. Jeg rettede planen i Update Plan, og agenten rettede testene, så de har AAA og de rigtige navne. 400 testen tjekker nu også fejlbeskeden. npm run check fejlede, fordi issue 3 og 4 ikke var merget, og agenten stoppede og rørte ikke src/. Vi kørte også npm run check, som kører 15 automatiske tests, bl.a. API tests med et fake repository, og ESLint.
 
 ## Afslutning
 
