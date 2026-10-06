@@ -27,19 +27,19 @@ Udkast som gruppen retter til. Skal vises til en anden studiegruppe, før vi kod
 | Hvad skal loggen indeholde? | Metode og path, fx `GET /read-file`. Timestamp er en udvidelse. |
 | Hvordan vil I teste fejlforløbet? | Manuelt med curl eller Postman: omdøbe `data/data.txt` og kalde `/read-file` (forventer 500), POST uden `content` (400), `content` som tal (400), ugyldig JSON (400) og ukendt route (404). Automatisk med `node --test` og et fake repository. 10 requests med `scripts/simulate_clients.js`. Vi tester også de øvrige forløb fra opgaven: en gyldig POST opdaterer filen, og hver request udløser et log event. |
 
-Vist til gruppe: Niklas og Jannicks gruppe
+Vist til gruppe: Import Gang
 
 Dato: Vist 2. oktober 2026, svar modtaget 5. oktober 2026 kl. 09:47
 
 Deres feedback: De syntes, planen så fornuftig ud, og anbefalede at tage AI i små trin. De foreslog at bruge eventet i selve loggeren, så man kan logge til både konsol og fil samtidig. De bad os uddybe, hvordan vi tester, og huske de øvrige forløb i opgaven. De ville droppe repository, og evt. middleware og routes, fordi det ikke er lært endnu, og fordi der kun er to endpoints.
 
-![Feedback fra den anden gruppe](docs/screenshots/feedback-anden-gruppe-2026-10-05.png)
+![Feedback fra den Import Gang](docs/screenshots/feedback-anden-gruppe-2026-10-05.png)
 
 Hvad vi ændrede efter feedback: Vi uddybede testplanen med, hvordan vi tester, og tilføjede flere fejlforløb. Vi tilføjer log til fil som udvidelse. Vi droppede routes mappen og kobler de to routes direkte i app.js, fordi der kun er to endpoints, og Router ikke er lært endnu. Vi beholdt de øvrige lag og repository, fordi vores issues er delt efter filer, og for at holde fs adskilt fra resten. Vi forklarer middleware for hinanden, før vi koder.
 
 ### Vi gav feedback til en anden gruppe
 
-Vist til os af: Tobys gruppe
+Vist til os af: Error 101
 
 Dato: 6. oktober 2026
 
@@ -47,7 +47,7 @@ Tobys plan: server.js, logger.js, data.txt, package.json og simulate_clients.js.
 
 Vores feedback: Jeres plan dækker de centrale valg og er konkret omkring async/await, try/catch, 404 og logningens indhold. Godt at I tester både 500 og 400. To forslag: 1. Overvej at dele koden op i flere filer i stedet for alt i server.js, så den er nemmere at teste og vedligeholde. Vi delte vores i controller, service og repository. 2. Tilføj en generel fejlhandler, fordi try/catch i routes ikke fanger fejl fra express.json(), fx ødelagt JSON. Vi har en errorHandler middleware til det.
 
-![Tobys plan](docs/screenshots/plan-tobys-gruppe-2026-10-06.png)
+![Error 101 plan](docs/screenshots/plan-tobys-gruppe-2026-10-06.png)
 
 ## Endpoints
 
