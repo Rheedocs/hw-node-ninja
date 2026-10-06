@@ -46,13 +46,19 @@ Hvad vi ændrede efter feedback: Vi uddybede testplanen med, hvordan vi tester, 
 
 ## Asynkronitet
 
+Skrives af: Gon
+
 Hvad sker der i Node.js, mens serveren venter på en filoperation? (Skrives med egne ord.)
 
 ## EventEmitter
 
+Skrives af: Mat
+
 Hvilket event bruger vi, og hvornår bliver det udsendt? (Skrives med egne ord.)
 
 ## Test
+
+Skrives af: Mat (resultater fra Nickis curl tests)
 
 1. Hvordan vi testede succes:
 2. Hvordan vi fremkaldte en fejl:
@@ -60,12 +66,35 @@ Hvilket event bruger vi, og hvornår bliver det udsendt? (Skrives med egne ord.)
 
 ## AI-brug
 
-Ét konkret eksempel:
+Hver af os skriver ét konkret eksempel fra vores egne issues.
+
+### Eksempel 1: Gon (issue 2 og 4)
 
 1. Hvad bad vi agenten om?
 2. Hvad foreslog eller ændrede agenten?
 3. Hvad kontrollerede vi?
 4. Accepterede, ændrede eller afviste vi forslaget?
+
+### Eksempel 2: Mat (issue 3 og 5)
+
+1. Hvad bad vi agenten om?
+2. Hvad foreslog eller ændrede agenten?
+3. Hvad kontrollerede vi?
+4. Accepterede, ændrede eller afviste vi forslaget?
+
+### Eksempel 3: Nicki (issue 1 og 6)
+
+1. Hvad bad vi agenten om?
+   Jeg brugte Copilot i Plan mode og gav den issuet med vores skabelon: opgave, kontekst, krav og hvad der ikke må ændres. Jeg skrev også, at den ikke måtte røre src/, hvis npm run check fejlede.
+
+2. Hvad foreslog eller ændrede agenten?
+   Planen var fem tests i tests/api.test.js: GET med indhold, GET med fejl, POST uden content, ukendt route og request eventet. Planen sagde kun, at testen kunne lytte på det udsendte event, men nævnte ikke eventets navn og indhold. Det tilføjede jeg i Update Plan: request med method og path.
+
+3. Hvad kontrollerede vi?
+   Jeg læste planen og git diff. Eventet hedder request og indeholder method og path. I diffen manglede // Arrange, // Act og // Assert i alle testene, og navnene fulgte ikke method_scenario_expectedResult.
+
+4. Accepterede, ændrede eller afviste vi forslaget?
+   Jeg ændrede det. Jeg rettede planen i Update Plan, og agenten rettede testene, så de har AAA og de rigtige navne. 400 testen tjekker nu også fejlbeskeden. npm run check fejlede, fordi issue 3 og 4 ikke var merget, og agenten stoppede og rørte ikke src/.
 
 ## Afslutning
 
