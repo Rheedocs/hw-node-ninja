@@ -56,14 +56,18 @@ Node.js har kun én tråd, men den står ikke og venter på filoperationer. Når
 Skrives af: Mat
 
 Hvilket event bruger vi, og hvornår bliver det udsendt? (Skrives med egne ord.)
+Vi bruger et request-event, som bliver udsendt af requestEmitter.js før alle routes. Eventet indeholder method og path, som { method: 'GET', path: '/read-file' }. Dette bliver også udsendt ved 404, så alle requests bliver logget.
 
 ## Test
 
 Skrives af: Mat (resultater fra Nickis curl tests)
 
 1. Hvordan vi testede succes:
+Vi hentet filen med curl og fik 200 OK. Vi skrev til filen med curl og fik 200 OK. Vi tjekkede at filen blev opdateret. Vi tjekkede at loggen blev skrevet til konsol og fil. 
 2. Hvordan vi fremkaldte en fejl:
+Vi omdøbte data.txt og hentede filen med curl, hvilket gav 500. Vi sendte POST uden content, hvilket gav 400. Vi sendte POST med content som tal, hvilket gav 400. Vi sendte POST med ugyldig JSON, hvilket gav 400. Vi hentede en ukendt route, hvilket gav 404.
 3. Hvordan vi testede flere requests:
+Vi kørte scripts/simulate_clients.js, som sender 10 requests til serveren. Vi tjekkede at alle requests blev logget til konsol og fil.
 
 ## AI-brug
 
@@ -83,9 +87,13 @@ Vi accepterede forslaget om at tilføje en object.defineProperty metode, og impl
 ### Eksempel 2: Mat (issue 3 og 5)
 
 1. Hvad bad vi agenten om?
+    Jeg bad agenten om at lave en plan for issue 3 og 5, hvor vi skulle implementere request eventet og loggeren. Jeg gav agenten vores skabelon med opgave, kontekst, krav og hvad der ikke måtte ændres. Jeg skrev også, at den ikke måtte røre src/, hvis npm run check fejlede.
 2. Hvad foreslog eller ændrede agenten?
+    Agenten foreslog en plan for hvordan vi kunne implementere request eventet og loggeren. Den foreslog at vi skulle oprette en requestEmitter.js fil, hvor vi kunne udsende request eventet med method og path. Den foreslog også at vi skulle oprette en requestLogger.js fil, hvor vi kunne lytte på request eventet og logge method og path til konsollen.
 3. Hvad kontrollerede vi?
+    Vi kontrollerede at agentens forslag var korrekt, og at det ville løse problemet med at logge alle requests. Vi testede både issue 3 og 5 med npm run check for at sikre os at alle testene var grønne. Vi kontrollerede også agenten ved brug af vores co-pilot instructions.
 4. Accepterede, ændrede eller afviste vi forslaget?
+    Vi accepterede forslaget om at oprette requestEmitter.js og requestLogger.js filerne, og implementerede det i vores kode. Vi ændrede dog planen lidt, da vi ville logge til både konsol og fil samtidig, som den anden gruppe foreslog. Ellers fik vi ikke afviste nogle forslag i issue 3 og 5 da vores plan var konkret og vi satte strenge regler, så agenten ikke gik uden for vores ramme.
 
 ### Eksempel 3: Nicki (issue 1 og 6)
 
