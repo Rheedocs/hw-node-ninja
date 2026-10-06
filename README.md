@@ -72,7 +72,7 @@ Vi bruger et request-event, som bliver udsendt af requestEvents.js før alle rou
 
 3. Hvordan vi testede flere requests:
 
-   Vi kørte scripts/simulate_clients.js, som sender 10 requests til serveren. Vi tjekkede at alle requests blev logget til konsollen.
+   Vi kørte scripts/simulate_clients.js, som sender 10 requests til serveren. Vi tjekkede at alle requests blev logget til konsollen. Vi kørte også npm run check, som kører 15 automatiske tests, bl.a. API tests med et fake repository, og ESLint.
 
 ## AI-brug
 
@@ -130,7 +130,7 @@ Hver af os skriver ét konkret eksempel fra vores egne issues.
 
 4. Accepterede, ændrede eller afviste vi forslaget?
 
-   Jeg ændrede det. Jeg rettede planen i Update Plan, og agenten rettede testene, så de har AAA og de rigtige navne. 400 testen tjekker nu også fejlbeskeden. npm run check fejlede, fordi issue 3 og 4 ikke var merget, og agenten stoppede og rørte ikke src/. Vi kørte også npm run check, som kører 15 automatiske tests, bl.a. API tests med et fake repository, og ESLint.
+   Jeg ændrede det. Jeg rettede planen i Update Plan, og agenten rettede testene, så de har AAA og de rigtige navne. 400 testen tjekker nu også fejlbeskeden. npm run check fejlede, fordi issue 3 og 4 ikke var merget, og agenten stoppede og rørte ikke src/.
 
 ## Afslutning
 
