@@ -87,7 +87,7 @@ Vi accepterede forslaget om at tilføje en object.defineProperty metode, og impl
 3. Hvad kontrollerede vi?
 4. Accepterede, ændrede eller afviste vi forslaget?
 
-### Eksempel 3: Nicki (issue 6)
+### Eksempel 3: Nicki (issue 1 og 6)
 
 1. Hvad bad vi agenten om?
    Jeg brugte Copilot i Plan mode og gav den issuet med vores skabelon: opgave, kontekst, krav og hvad der ikke må ændres. Jeg skrev også, at den ikke måtte røre src/, hvis npm run check fejlede.
@@ -96,7 +96,7 @@ Vi accepterede forslaget om at tilføje en object.defineProperty metode, og impl
    Planen var fem tests i tests/api.test.js: GET med indhold, GET med fejl, POST uden content, ukendt route og request eventet. Planen sagde kun, at testen kunne lytte på det udsendte event, men nævnte ikke eventets navn og indhold. Det tilføjede jeg i Update Plan: request med method og path.
 
 3. Hvad kontrollerede vi?
-   Jeg læste planen og git diff. Eventet hedder request og indeholder method og path. I diffen manglede // Arrange, // Act og // Assert i alle testene, og navnene fulgte ikke method_scenario_expectedResult.
+   Jeg læste planen og git diff. Eventet hedder request og indeholder method og path. I diffen manglede // Arrange, // Act og // Assert i alle testene, og navnene fulgte ikke method_scenario_expectedResult. På wiring fandt jeg i diffen, at agenten satte express.json() før createRequestEvents, så ugyldig JSON ikke blev logget. Jeg rettede, så createRequestEvents står først.
 
 4. Accepterede, ændrede eller afviste vi forslaget?
    Jeg ændrede det. Jeg rettede planen i Update Plan, og agenten rettede testene, så de har AAA og de rigtige navne. 400 testen tjekker nu også fejlbeskeden. npm run check fejlede, fordi issue 3 og 4 ikke var merget, og agenten stoppede og rørte ikke src/.
