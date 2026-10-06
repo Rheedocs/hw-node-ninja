@@ -51,6 +51,7 @@ Skrives af: Gon
 Hvad sker der i Node.js, mens serveren venter på en filoperation? (Skrives med egne ord.)
 
 Node.js har kun én tråd, men den står ikke og venter på filoperationer. Når handleReadFile kalder await fileService.readContent() så sendes læsningen videre til operativsystemet, og Node kan i mellemtiden tage imod andre requests. Når filen er læst, fortsætter koden efter await og svaret sendes. Med readFileSync ville serveren i stedet stå stille, indtil filen var læst, hvilket ikke er godt.
+
 ## EventEmitter
 
 Skrives af: Mat
@@ -76,13 +77,20 @@ Hver af os skriver ét konkret eksempel fra vores egne issues.
 ### Eksempel 1: Gon (issue 2 og 4)
 
 1. Hvad bad vi agenten om?
-Jeg brugte agenten til at planlægge issue 2 og issue 4. Her har jeg kopieret mit issue fra github, og agenten lavede en plan for hvordan vi kunne løse opgaven.
+
+   Jeg brugte agenten til at planlægge issue 2 og issue 4. Her har jeg kopieret mit issue fra GitHub, og agenten lavede en plan for, hvordan vi kunne løse opgaven.
+
 2. Hvad foreslog eller ændrede agenten?
-Agenten foreslog en ændring i errorHandler fordi vores eslint.config.js har en function.lenght == 3, hvilket betyder at express ikke ville geneknde det som en fejlhandler, og ville derfor sende et stracTrace ud i consolen, istedet for vores egne fejlbeskder. Derfor oprettet agenten en metode hvor den defineret errorhandleren objektet med 4 parameter, så Express ville genkende det som en fejlhandler, og dermed ikke sende stackTrace ud i consolen.
+
+   Agenten foreslog en ændring i errorHandler, fordi vores eslint.config.js kun tillader 3 parametre, mens Express kræver 4 for at genkende en fejlhandler. Uden 4 parametre ville Express ikke se den som fejlhandler og ville sende et stackTrace ud i konsollen i stedet for vores egne fejlbeskeder. Derfor satte agenten function.length til 4 på errorHandler, så Express genkender den som en fejlhandler og ikke sender stackTrace ud.
+
 3. Hvad kontrollerede vi?
-Vi kontrollerede, at agentens forslag var korrekt, og at det ville løse problemet med blandt andet esllint og express. Vi testede både issue 2 og 4 med npm run check for at sikre os at alle testene var grønne. Vi kontrollerede også agenten ved brug af vores co-pilot instructions.
+
+   Vi kontrollerede, at agentens forslag var korrekt, og at det ville løse problemet med blandt andet eslint og Express. Vi testede både issue 2 og 4 med npm run check for at sikre os, at alle testene var grønne. Vi kontrollerede også agenten ved brug af vores Copilot instructions.
+
 4. Accepterede, ændrede eller afviste vi forslaget?
-Vi accepterede forslaget om at tilføje en object.defineProperty metode, og implementerede det i vores errorHandler. Ellers fik vi ikke afviste nogle forslag i issue 2 og 4 da vores plan var konkret og vi satte strenge regler, så agenten ikke gik uden for vores ramme.
+
+   Vi accepterede forslaget om at bruge Object.defineProperty og implementerede det i vores errorHandler. Ellers afviste vi ingen forslag i issue 2 og 4, da vores plan var konkret, og vi satte strenge regler, så agenten ikke gik uden for vores ramme.
 
 ### Eksempel 2: Mat (issue 3 og 5)
 
