@@ -82,7 +82,7 @@ Hver af os skriver ét konkret eksempel fra vores egne issues.
 3. Hvad kontrollerede vi?
 4. Accepterede, ændrede eller afviste vi forslaget?
 
-### Eksempel 3: Nicki (issue 1 og 6)
+### Eksempel 3: Nicki (issue 6)
 
 1. Hvad bad vi agenten om?
    Jeg brugte Copilot i Plan mode og gav den issuet med vores skabelon: opgave, kontekst, krav og hvad der ikke må ændres. Jeg skrev også, at den ikke måtte røre src/, hvis npm run check fejlede.
