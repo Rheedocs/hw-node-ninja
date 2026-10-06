@@ -72,7 +72,7 @@ Hver af os skriver ét konkret eksempel fra vores egne issues.
 ### Eksempel 1: Gon (issue 2 og 4)
 
 1. Hvad bad vi agenten om?
-Jeg brugte agenten til at planlægge issue 2 og issue 4. Her har jeg kopieret mit issue fra github, og agenten lavede en plan for, hvordan vi kunne løse opgaven.
+Jeg brugte agenten til at planlægge issue 2 og issue 4. Her har jeg kopieret mit issue fra github, og agenten lavede en plan for hvordan vi kunne løse opgaven.
 2. Hvad foreslog eller ændrede agenten?
 Agenten foreslog en ændring i errorHandler fordi vores eslint.config.js har en function.lenght == 3, hvilket betyder at express ikke ville geneknde det som en fejlhandler, og ville derfor sende et stracTrace ud i consolen, istedet for vores egne fejlbeskder. Derfor oprettet agenten en metode hvor den defineret errorhandleren objektet med 4 parameter, så Express ville genkende det som en fejlhandler, og dermed ikke sende stackTrace ud i consolen.
 3. Hvad kontrollerede vi?
