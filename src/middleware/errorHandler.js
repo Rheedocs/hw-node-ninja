@@ -1,22 +1,23 @@
 /**
  * Returns a safe JSON response for errors forwarded by Express.
- * @param {Error & { type?: string }} error
- * @param {object} request
- * @param {{ status: (code: number) => { json: (body: { error: string }) => void } }} response
+ * @param {Error & { type?: string }} err
+ * @param {object} req
+ * @param {{ headersSent?: boolean, status: (code: number) => { json: (body: { error: string }) => void } }} res
+ * @param {(error: Error & { type?: string }) => void} next
  */
-function errorHandler(error, request, response) {
-  void request;
-  const isInvalidJson = error?.type === 'entity.parse.failed';
+function errorHandler(err, req, res, next) {
+  void req;
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  const isInvalidJson = err?.type === 'entity.parse.failed';
   const statusCode = isInvalidJson ? 400 : 500;
   const message = isInvalidJson
     ? 'Ugyldig JSON i forespørgslen.'
     : 'Der opstod en intern serverfejl.';
 
-  response.status(statusCode).json({ error: message });
+  res.status(statusCode).json({ error: message });
 }
-
-// Express genkender fejlhandlere på function.length === 4.
-// Projektets max-params er 3, så længden sættes eksplicit.
-Object.defineProperty(errorHandler, 'length', { value: 4 });
 
 module.exports = { errorHandler };

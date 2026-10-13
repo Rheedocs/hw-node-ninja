@@ -23,7 +23,7 @@ module.exports = [
             complexity: ['error', 6],
             'max-lines-per-function': ['error', { max: 25, skipBlankLines: true, skipComments: true }],
             'max-lines': ['error', { max: 120, skipBlankLines: true, skipComments: true }],
-            'max-params': ['error', 3],
+            'max-params': ['error', 4],
             'no-var': 'error',
             'prefer-const': 'error',
         },
